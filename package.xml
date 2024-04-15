@@ -38,7 +38,7 @@ extension, but it can&apos;t be used
 interchangeably because dbase doesn&apos;t
 support many standard DBMS features.
 
-DB is compatible with PHP 5 and PHP 7.
+DB is compatible with PHP 5 and PHP 8.
 
  </description>
  <lead>
@@ -71,9 +71,9 @@ DB is compatible with PHP 5 and PHP 7.
   <email>cox@idecnet.com</email>
   <active>no</active>
  </developer>
- <date>2024-01-17</date>
+ <date>2024-04-15</date>
  <version>
-  <release>1.12.1</release>
+  <release>1.12.2</release>
   <api>1.12.0</api>
  </version>
  <stability>
@@ -82,8 +82,11 @@ DB is compatible with PHP 5 and PHP 7.
  </stability>
  <license uri="http://www.php.net/license">PHP License</license>
  <notes>
-* bug: Missing new file in package.xml #25
-* bug: Minimal fix for sqlite3 #26
+* Task: Manage E_DEPRECATED #27
+* Task: Remove CVS id that no longer makes sense #30
+* Bug: Bug in DB/oci8.php ... oci_fetch_array called with wrong parameters #33 #34
+* Bug: Errors raised in DB_storage::toString() if there are multi-column keys, on PHP >= 7 #35
+* Bug: sqlite3 back-end incorrectly refers to 'resource' objects #38 #39
  </notes>
  <contents>
   <dir name="/">

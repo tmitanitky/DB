@@ -382,14 +382,24 @@ class DB_oci8 extends DB_common
             return $this->raiseError(DB_ERROR_NOT_CAPABLE);
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
-            $moredata = @oci_fetch_array($result,$arr,OCI_ASSOC+OCI_RETURN_NULLS+OCI_RETURN_LOBS);
+            $arr = @oci_fetch_array($result,OCI_ASSOC+OCI_RETURN_NULLS+OCI_RETURN_LOBS);
+            if (is_array($arr)) {
+                $moredata = count($arr);
+            } else {
+                $moredata = false;
+            }
             if ($this->options['portability'] & DB_PORTABILITY_LOWERCASE &&
                 $moredata)
             {
                 $arr = array_change_key_case($arr, CASE_LOWER);
             }
         } else {
-            $moredata = oci_fetch_array($result,$arr,OCI_RETURN_NULLS+OCI_RETURN_LOBS);
+            $arr = @oci_fetch_array($result,OCI_ASSOC+OCI_RETURN_NULLS+OCI_RETURN_LOBS);
+            if (is_array($arr)) {
+                $moredata = count($arr);
+            } else {
+                $moredata = false;
+            }
         }
         if (!$moredata) {
             return null;

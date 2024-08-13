@@ -302,7 +302,7 @@ class DB_dbase extends DB_common
     function fetchInto($result, &$arr, $fetchmode, $rownum = null)
     {
         if ($rownum === null) {
-            $rownum = $this->res_row[(int)$result]++;
+            $rownum = $this->res_row[spl_object_hash($result)]++;
         }
         if ($fetchmode & DB_FETCHMODE_ASSOC) {
             $arr = @dbase_get_record_with_names($this->connection, $rownum);

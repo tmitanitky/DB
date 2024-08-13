@@ -355,12 +355,12 @@ class DB_pgsql extends DB_common
         } elseif (preg_match('/^\s*\(*\s*(SELECT|EXPLAIN|FETCH|SHOW|WITH)\s/si',
                              $query))
         {
-            $this->row[(int)$result] = 0; // reset the row counter.
+            $this->row[spl_object_hash($result)] = 0; // reset the row counter.
             $numrows = $this->numRows($result);
             if (is_object($numrows)) {
                 return $numrows;
             }
-            $this->_num_rows[(int)$result] = $numrows;
+            $this->_num_rows[spl_object_hash($result)] = $numrows;
             $this->affected = 0;
             return $result;
         } else {
@@ -411,7 +411,7 @@ class DB_pgsql extends DB_common
      */
     function fetchInto($result, &$arr, $fetchmode, $rownum = null)
     {
-        $result_int = (int)$result;
+        $result_int = spl_object_hash($result);
         $rownum = ($rownum !== null) ? $rownum : $this->row[$result_int];
         if ($rownum >= $this->_num_rows[$result_int]) {
             return null;
@@ -455,9 +455,9 @@ class DB_pgsql extends DB_common
      */
     function freeResult($result)
     {
-        if (is_resource($result)) {
-            unset($this->row[(int)$result]);
-            unset($this->_num_rows[(int)$result]);
+        if (is_resource($id) || is_a($result, 'PgSql\\Result')) {
+            unset($this->row[spl_object_hash($result)]);
+            unset($this->_num_rows[spl_object_hash($result)]);
             $this->affected = 0;
             return @pg_free_result($result);
         }
@@ -905,7 +905,7 @@ class DB_pgsql extends DB_common
             $got_string = false;
         }
 
-        if (!is_resource($id)) {
+        if (!(is_resource($id)||is_a($result, 'PgSql\\Result'))) {
             return $this->pgsqlRaiseError(DB_ERROR_NEED_MORE_DATA);
         }
 
